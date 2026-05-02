@@ -1,6 +1,11 @@
 import Link from "next/link";
 
-export default function HomePage() {
+import { getUser } from "@/app/_actions/user-actions";
+
+export default async function HomePage() {
+  const userRes = await getUser();
+  const loggedIn = userRes.ok;
+
   return (
     <div className="mx-auto max-w-2xl px-4 py-16">
       <h1 className="text-4xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-100">
@@ -17,12 +22,14 @@ export default function HomePage() {
         >
           Browse community decks
         </Link>
-        <Link
-          href="/signup"
-          className="rounded-md border border-zinc-300 px-5 py-2.5 text-zinc-900 hover:bg-zinc-50 dark:border-zinc-600 dark:text-zinc-100 dark:hover:bg-zinc-900"
-        >
-          Get started
-        </Link>
+        {!loggedIn ? (
+          <Link
+            href="/signup"
+            className="rounded-md border border-zinc-300 px-5 py-2.5 text-zinc-900 hover:bg-zinc-50 dark:border-zinc-600 dark:text-zinc-100 dark:hover:bg-zinc-900"
+          >
+            Get started
+          </Link>
+        ) : null}
       </div>
     </div>
   );

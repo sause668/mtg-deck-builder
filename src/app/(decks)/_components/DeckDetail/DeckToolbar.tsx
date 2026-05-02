@@ -8,7 +8,7 @@ type Deck = NonNullable<Awaited<ReturnType<typeof getDeckById>>>;
 
 export function DeckToolbar({ deck }: { deck: Deck }) {
   return (
-    <div className="space-y-6 rounded-lg border border-zinc-200 bg-zinc-50 p-4 dark:border-zinc-800 dark:bg-zinc-900/40">
+    <div className="min-w-0 space-y-6 rounded-lg border border-zinc-200 bg-zinc-50 p-4 dark:border-zinc-800 dark:bg-zinc-900/40">
       <form action={updateDeckFromForm} className="space-y-4">
         <input type="hidden" name="deckId" value={deck.id} />
         <div>
