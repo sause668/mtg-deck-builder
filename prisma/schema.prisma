@@ -1,0 +1,47 @@
+// https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/app/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id             Int      @id @default(autoincrement())
+  email          String   @unique
+  hashedPassword String
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  decks          Deck[]
+}
+
+model Deck {
+  id          Int        @id @default(autoincrement())
+  userId      Int
+  user        User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name        String
+  description String?
+  isPublic    Boolean    @default(true)
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  cards       DeckCard[]
+
+  @@index([userId])
+  @@index([isPublic])
+}
+
+model DeckCard {
+  id          Int    @id @default(autoincrement())
+  deckId      Int
+  deck        Deck   @relation(fields: [deckId], references: [id], onDelete: Cascade)
+  scryfallId  String
+  quantity    Int
+  name        String
+  imageSmall  String?
+
+  @@unique([deckId, scryfallId])
+  @@index([deckId])
+}
